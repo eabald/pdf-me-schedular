@@ -1,6 +1,6 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class TasksService {
@@ -11,17 +11,17 @@ export class TasksService {
     @Inject('FILES_SERVICE') private filesService: ClientProxy,
   ) {}
 
-  @Cron('* * * * *')
+  @Cron(CronExpression.EVERY_MINUTE)
   ping() {
     this.logger.debug('Task running every minute');
   }
 
-  @Cron('0 * * * *')
+  @Cron(CronExpression.EVERY_HOUR)
   async pruneFiles() {
     await this.filesService.send({ cmd: 'files-prune' }, null).toPromise();
   }
 
-  @Cron('0 * * * *')
+  @Cron(CronExpression.EVERY_HOUR)
   async resetLimits() {
     await this.limitsService.send({ cmd: 'limits-reset' }, null).toPromise();
   }
