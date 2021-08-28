@@ -9,20 +9,25 @@ export class TasksService {
   constructor(
     @Inject('LIMITS_SERVICE') private limitsService: ClientProxy,
     @Inject('FILES_SERVICE') private filesService: ClientProxy,
-  ) {}
+  ) {
+    limitsService.connect();
+    filesService.connect();
+  }
 
   @Cron(CronExpression.EVERY_MINUTE)
   ping() {
-    this.logger.debug('Task running every minute');
+    this.logger.log('Task running every minute');
   }
 
   @Cron(CronExpression.EVERY_HOUR)
   async pruneFiles() {
-    await this.filesService.send({ cmd: 'files-prune' }, null).toPromise();
+    return await this.filesService.send({ cmd: 'files-prune' }, '').toPromise();
   }
 
   @Cron(CronExpression.EVERY_HOUR)
   async resetLimits() {
-    await this.limitsService.send({ cmd: 'limits-reset' }, null).toPromise();
+    return await this.limitsService
+      .send({ cmd: 'limits-reset' }, '')
+      .toPromise();
   }
 }

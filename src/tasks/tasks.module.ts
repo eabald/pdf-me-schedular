@@ -5,7 +5,6 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 @Module({
   imports: [ConfigModule],
   providers: [
-    TasksService,
     {
       provide: 'FILES_SERVICE',
       useFactory: (configService: ConfigService) => {
@@ -46,6 +45,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
       },
       inject: [ConfigService],
     },
+    TasksService,
   ],
 })
 export class TasksModule {}
