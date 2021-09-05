@@ -30,4 +30,11 @@ export class TasksService {
       .send({ cmd: 'limits-reset' }, '')
       .toPromise();
   }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async resetSubscriptionsLimits() {
+    return await this.limitsService
+      .send({ cmd: 'limits-reset-subscription' }, '')
+      .toPromise();
+  }
 }
