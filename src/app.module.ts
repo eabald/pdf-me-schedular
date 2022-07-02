@@ -10,9 +10,9 @@ import { ConfigModule } from '@nestjs/config';
     TasksModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        RABBITMQ_USER: Joi.string(),
-        RABBITMQ_PASSWORD: Joi.string(),
-        RABBITMQ_HOST: Joi.string(),
+        RABBITMQ_USER: Joi.string().required(),
+        RABBITMQ_PASSWORD: Joi.string().required(),
+        RABBITMQ_HOST: Joi.string().required(),
         SESSION_SECRET: Joi.string().required(),
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.number().required(),
